@@ -10,7 +10,10 @@ import fr.eni.demo.dal.jdbc.JdbcTools;
 
 public class DAOMeal extends DAOBase{
 
-	public void insert(Meal meal) {
+	public DAOMeal() {
+	}
+	
+	public boolean insert(Meal meal) {
 		// Prepare les var
 		Connection cnx = null;
 		
@@ -35,7 +38,8 @@ public class DAOMeal extends DAOBase{
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}	
+		}
+		return true;	
 	}
-	
+
 }

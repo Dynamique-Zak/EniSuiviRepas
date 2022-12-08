@@ -1,7 +1,6 @@
-package fr.eni.demo.ihm.servlet;
+package fr.eni.demo.ihm.servlet.simple;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,44 +9,34 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.eni.demo.bll.BLLResponse;
-import fr.eni.demo.bll.ManagerFactory;
+import fr.eni.demo.bll.ManagerFactorySimple;
 import fr.eni.demo.bll.MealManager;
 import fr.eni.demo.bo.Meal;
 
 /**
- * Servlet implementation class ShowMealServlet
+ * Servlet implementation class AddMealSimpleServlet
  */
-@WebServlet("/show-meal")
-public class ShowMealServlet extends HttpServlet {
+@WebServlet("/add-meal-simple")
+public class AddMealSimpleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ShowMealServlet() {
+    public AddMealSimpleServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
-
+  
+   
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Afficher page Show Meal
-	
-		// un Objet
-		BLLResponse<Meal> responseBLL = ManagerFactory.getManagerByClass(MealManager.class).getMeal(1);
-		
-		Meal meal = responseBLL.getObject();
-		
-		// Liste
-		BLLResponse<List<Meal>> responseBLL2 = ManagerFactory.getManagerByClass(MealManager.class).getAllMeal();
-		List<Meal> meals = responseBLL2.getObject();
-
-		request.setAttribute("meals", meals);
-		
-		RequestDispatcher rd = request.getRequestDispatcher("show-meal.jsp");
+;
+		// Afficher page Add Meal
+		RequestDispatcher rd = request.getRequestDispatcher("add-meal-simple.jsp");
 		rd.forward(request, response);
 	}
 
@@ -55,8 +44,23 @@ public class ShowMealServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		// Instancer meal grace aux données du formulaire
+    	Meal meal = new Meal(request.getParameter("date"), Integer.parseInt(request.getParameter("hour")));
+    			
+    	// Je récupère le meal manager
+    	MealManager mealManager = ManagerFactorySimple.getMealManager();
+    	
+    	// j'utilise le meal manager (Ajouter un Repas)
+    	boolean success = mealManager.addMealSimpleVersion(meal);
+		
+		if (success) {
+			response.getWriter().append("Meal addedd successfully");
+		}
+		else {
+			response.getWriter().append("Meal error");
+
+		}
 	}
+		
 
 }

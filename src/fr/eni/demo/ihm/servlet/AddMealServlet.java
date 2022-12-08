@@ -1,7 +1,6 @@
 package fr.eni.demo.ihm.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +13,8 @@ import fr.eni.demo.bll.BLLResponse;
 import fr.eni.demo.bll.ManagerFactory;
 import fr.eni.demo.bll.MealManager;
 import fr.eni.demo.bo.Meal;
+import fr.eni.demo.dal.DAOFactory;
+import fr.eni.demo.dal.DAOMeal;
 
 /**
  * Servlet implementation class AddMealServlet
@@ -27,7 +28,6 @@ public class AddMealServlet extends HttpServlet {
      */
     public AddMealServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -83,6 +83,9 @@ public class AddMealServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		DAOFactory.getDAOByClass(DAOMeal.class).insert(new Meal("sdsd", 10));
+		
 		// Afficher page Add Meal
 		RequestDispatcher rd = request.getRequestDispatcher("add-meal.jsp");
 		rd.forward(request, response);

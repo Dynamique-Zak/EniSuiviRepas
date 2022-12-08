@@ -5,17 +5,19 @@ import java.util.List;
 
 import fr.eni.demo.bo.Meal;
 import fr.eni.demo.dal.DAOFactory;
+import fr.eni.demo.dal.DAOFactorySimple;
 import fr.eni.demo.dal.DAOMeal;
 
 public class MealManager extends ManagerBase {
 
 	/**
 	 * Version simple 
+	 * RG-8596
 	 * @param meal
 	 * @return
 	 */
 	public boolean addMealSimpleVersion(Meal meal) {
-		
+		// par défaut c ok
 		boolean success = true;
 		
 		// RG-8596-02 :: Si l'heure n'es pas valide
@@ -25,14 +27,18 @@ public class MealManager extends ManagerBase {
 		
 		// Si tout est OK
 		if (success) {
-			// Insert meal
-			DAOFactory.getDAOByClass(DAOMeal.class).insert(meal);
+			// je récupère DAO meal
+			DAOMeal daoMeal = DAOFactorySimple.getDAOMeal();
+			
+			// j'utilise l'insert de dao MEAL
+			daoMeal.insert(meal);
 		}
 		
 		return success;
 	}
 	
 	/**
+	 * Version generique
 	 * RG-8596
 	 * @param meal
 	 * @return
@@ -58,6 +64,9 @@ public class MealManager extends ManagerBase {
 		return response;
 	}
 	
+	// =========================================================== //
+	// PARTIE 2 - IGNORER //
+	// =========================================================== //
 	public BLLResponse<Meal> getMeal(int Id) {
 		Meal meal = new Meal("2022-02-01", 10);
 		
@@ -72,7 +81,7 @@ public class MealManager extends ManagerBase {
 		meals.add(new Meal("kqskdjqsjdqsd", 10));
 		meals.add(new Meal("Dur", 15));
 		
-		BLLResponse response = new BLLResponse(200, "Success", meals);
+		BLLResponse<List<Meal>> response = new BLLResponse<List<Meal>>(200, "Success", meals);
 		
 		return response;
 	}
