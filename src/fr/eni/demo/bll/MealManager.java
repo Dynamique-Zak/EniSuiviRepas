@@ -17,24 +17,13 @@ public class MealManager extends ManagerBase {
 	 * @return
 	 */
 	public boolean addMealSimpleVersion(Meal meal) {
-		// par défaut c ok
-		boolean success = true;
+		// je récupère DAO meal
+		DAOMeal daoMeal = DAOFactorySimple.getDAOMeal();
 		
-		// RG-8596-02 :: Si l'heure n'es pas valide
-		if (meal.getHour() < 0 && meal.getHour() > 23) {
-			success = false;
-		}
+		// j'utilise l'insert de dao MEAL
+		daoMeal.insert(meal);
 		
-		// Si tout est OK
-		if (success) {
-			// je récupère DAO meal
-			DAOMeal daoMeal = DAOFactorySimple.getDAOMeal();
-			
-			// j'utilise l'insert de dao MEAL
-			daoMeal.insert(meal);
-		}
-		
-		return success;
+		return true;
 	}
 	
 	/**

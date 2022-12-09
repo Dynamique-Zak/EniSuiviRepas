@@ -47,6 +47,7 @@ public class ShowMealServlet extends HttpServlet {
 
 		request.setAttribute("meals", meals);
 		
+		// Afficher la page repas
 		RequestDispatcher rd = request.getRequestDispatcher("show-meal.jsp");
 		rd.forward(request, response);
 	}

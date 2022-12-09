@@ -63,6 +63,7 @@ public class AddMealServlet extends HttpServlet {
     	// Instancer meal grace aux données du formulaire
     	Meal meal = new Meal(request.getParameter("date"), Integer.parseInt(request.getParameter("hour")));
     			
+    	// Appel la BLL/Manager
     	boolean success = ManagerFactory.getManagerByClass(MealManager.class).addMealSimpleVersion(meal);
 		
 		if (success) {
@@ -83,9 +84,6 @@ public class AddMealServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		DAOFactory.getDAOByClass(DAOMeal.class).insert(new Meal("sdsd", 10));
-		
 		// Afficher page Add Meal
 		RequestDispatcher rd = request.getRequestDispatcher("add-meal.jsp");
 		rd.forward(request, response);
