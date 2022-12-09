@@ -54,6 +54,16 @@ public class MealManager extends ManagerBase {
 	}
 	
 	// =========================================================== //
+	// PARTIE 2 - SIMPLE //
+	// =========================================================== //
+	public List<Meal> getAllMeal(){
+		// Select all meal depuis la BDD (la DAO)
+		List<Meal> meals = DAOFactorySimple.getDAOMeal().selectAll();
+		
+		return meals;
+	}
+	
+	// =========================================================== //
 	// PARTIE 2 - IGNORER //
 	// =========================================================== //
 	public BLLResponse<Meal> getMeal(int Id) {
@@ -64,7 +74,7 @@ public class MealManager extends ManagerBase {
 		return response;
 	}
 	
-	public BLLResponse<List<Meal>> getAllMeal() {
+	public BLLResponse<List<Meal>> getAllMealGodVersion() {
 		List<Meal> meals = new ArrayList<Meal>();
 		
 		meals.add(new Meal("kqskdjqsjdqsd", 10));

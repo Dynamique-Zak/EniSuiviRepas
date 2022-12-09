@@ -13,8 +13,6 @@ import fr.eni.demo.bll.BLLResponse;
 import fr.eni.demo.bll.ManagerFactory;
 import fr.eni.demo.bll.MealManager;
 import fr.eni.demo.bo.Meal;
-import fr.eni.demo.dal.DAOFactory;
-import fr.eni.demo.dal.DAOMeal;
 
 /**
  * Servlet implementation class AddMealServlet
@@ -61,8 +59,8 @@ public class AddMealServlet extends HttpServlet {
      */
     protected void versionSimple(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	// Instancer meal grace aux données du formulaire
-    	Meal meal = new Meal(request.getParameter("date"), Integer.parseInt(request.getParameter("hour")));
-    			
+    	Meal meal = new Meal(request.getParameter("date"), Integer.parseInt(request.getParameter("hour")), request.getParameter("aliments"));
+    	
     	// Appel la BLL/Manager
     	boolean success = ManagerFactory.getManagerByClass(MealManager.class).addMealSimpleVersion(meal);
 		
@@ -97,8 +95,7 @@ public class AddMealServlet extends HttpServlet {
 		versionSimple(request, response);
 		
 		// Version Réponse Métier avancée
-		versionAvancee(request, response);
-		
+		// versionAvancee(request, response);
 	}
 
 }

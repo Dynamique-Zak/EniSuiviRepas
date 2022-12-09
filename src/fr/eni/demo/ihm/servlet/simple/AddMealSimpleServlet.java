@@ -53,11 +53,10 @@ public class AddMealSimpleServlet extends HttpServlet {
     	boolean success = mealManager.addMealSimpleVersion(meal);
 		
 		if (success) {
-			response.getWriter().append("Meal addedd successfully");
+			response.getWriter().append("Meal added successfully");
 		}
 		else {
 			response.getWriter().append("Meal error");
-
 		}
 	}
 		
