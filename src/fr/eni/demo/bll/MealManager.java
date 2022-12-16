@@ -73,6 +73,8 @@ public class MealManager extends ManagerBase {
 		
 		System.out.println("Test");
 		
+		System.out.println("Je suis un saligo");
+		
 		return response;
 	}
 	
