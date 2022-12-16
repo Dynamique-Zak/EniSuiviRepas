@@ -14,4 +14,19 @@ public class NoteManager extends ManagerBase {
 		return notes;
 	}
 	
+	public boolean add(Note note){
+		// Appel DAO insert
+		return DAOFactorySimple.getDAONote().insert(note);
+	}
+	
+	public boolean update(Note note){
+		// Appel DAO update
+		return DAOFactorySimple.getDAONote().update(note);
+	}
+	
+	public boolean delete(int id){
+		// Appel DAO delete
+		return DAOFactorySimple.getDAONote().delete(id);
+	}
+	
 }

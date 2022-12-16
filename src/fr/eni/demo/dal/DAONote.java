@@ -53,5 +53,103 @@ public class DAONote extends DAOBase{
 		// Quel soit vide ou pas on retourne la liste
 		return notes;	
 	}
+
+	public boolean insert(Note note) {
+		// Prepare les var
+		Connection cnx = null;
+		
+		try{
+			// Ouvrir la connexion
+			cnx = JdbcTools.getConnection();
+			
+			// La requête
+			PreparedStatement stmt = cnx.prepareStatement("INSERT INTO note (details) VALUES (?)");
+			
+			// Remplacer les params
+			// -- detail
+			stmt.setString(1, note.getDetails());
+			
+			// J'execute la requete
+			stmt.execute();
+
+	        // Fermer la connexion
+	        cnx.close();
+	        
+	        return true;
 	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Quel soit vide ou pas on retourne la liste
+		return false;	
+	}
+
+	public boolean update(Note note) {
+		// Prepare les var
+		Connection cnx = null;
+		
+		try{
+			// Ouvrir la connexion
+			cnx = JdbcTools.getConnection();
+			
+			// La requête
+			PreparedStatement stmt = cnx.prepareStatement("UPDATE note SET details=? WHERE id=?");
+			
+			// Remplacer les params
+			// -- detail
+			stmt.setString(1, note.getDetails());
+			stmt.setInt(2, note.getId());
+			
+			// J'execute la requete
+			stmt.execute();
+
+	        // Fermer la connexion
+	        cnx.close();
+	        
+	        return true;
+	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Quel soit vide ou pas on retourne la liste
+		return false;	
+	}
+	
+	public boolean delete(int Id) {
+		// Prepare les var
+		Connection cnx = null;
+		
+		try{
+			// Ouvrir la connexion
+			cnx = JdbcTools.getConnection();
+			
+			// La requête
+			PreparedStatement stmt = cnx.prepareStatement("DELETE FROM note WHERE id=?");
+			stmt.setInt(1, Id);
+			
+			// Executer la requete
+	        stmt.execute();
+	        
+	        // Fermer la connexion
+	        cnx.close();
+	        
+	        return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+			
+		return false;
+	}
+
 }
