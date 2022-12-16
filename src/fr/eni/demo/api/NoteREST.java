@@ -10,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import fr.eni.demo.bll.ManagerFactory;
 import fr.eni.demo.bll.NoteManager;
@@ -18,6 +19,26 @@ import fr.eni.demo.bo.Note;
 @Path("note")
 public class NoteREST {
 
+	@GET
+	@Path("/allVersionCross")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllNoteCORS() {
+		
+		// Je récupère ma BLL/Manager
+		NoteManager noteManager = ManagerFactory.getManagerByClass(NoteManager.class);
+		
+		// Je récupère mes notes
+		List<Note> notes = noteManager.getAll();
+		
+		// Je simule du lag (je dis au thread java d'attendre 1 sec)	
+		
+		// Je retourne mes notes
+		return Response.ok().entity(notes)
+				  .header("Access-Control-Allow-Origin", "*")
+			         .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT").build();
+	}
+	
+	
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -30,12 +51,6 @@ public class NoteREST {
 		List<Note> notes = noteManager.getAll();
 		
 		// Je simule du lag (je dis au thread java d'attendre 1 sec)
-	
-		try {
-		  Thread.sleep(1000);
-		} catch (InterruptedException e) {
-		  Thread.currentThread().interrupt();
-		}
 		
 		// Je retourne mes notes
 		return notes;
@@ -64,7 +79,7 @@ public class NoteREST {
 		return noteManager.update(note);
 	}
 	
-	@DELETE
+	@GET
 	@Path("/delete/{id: \\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean deleteNote(@PathParam("id") int id) {

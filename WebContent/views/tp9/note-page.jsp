@@ -5,7 +5,7 @@
 
 <jsp:include page="/views/template/page-begin.jsp"></jsp:include>
 
-<h1>Page Note</h1>
+<h1>Accueil</h1>
 
 	<div id="loading-spinner" style="display: none">
 		<span id="loading-spinner" uk-spinner="ratio: 4.5"></span>
@@ -15,12 +15,26 @@
 	<!-- Le Contenu de la page -->
 	<div id="page-content">
 		<div id="ListView">
+		</div>
+	</div>
 	
 </div>
 
-<button id="BtnWebservice" class="uk-button uk-button-default" onclick="">Appeler le Web Service</button>
-		
-	</div>
+<form id="form-note" class="uk-form-control">
+    <fieldset class="uk-fieldset">
+
+        <legend class="uk-legend">Ajouter une note</legend>
+        
+	    <div class="uk-margin">
+	        <label class="uk-form-label" for="form-stacked-text">Note</label>
+			<input  class="uk-input" type="text" name="details">
+		</div>
+	    <div class="uk-margin">
+			<input type="button" id="BtnWebservice" class="uk-button uk-button-default" value="Appeler le Web Service" />
+		</div>
+	</fieldset>
+</form>
+
 	
 
 
@@ -45,10 +59,10 @@ $(document).ready(function(){
 	}
 	
 	// Example GET method implementation:
-	async function callUrl(url = '', payload = {}) {
+	async function callUrl(url = '', method, payload = {}) {
 	  // Default options are marked with *
 	  const response = await fetch(url, {
-	    method: 'GET', // *GET, POST, PUT, DELETE, etc.
+	    method: method, // *GET, POST, PUT, DELETE, etc.
 	    mode: 'cors', // no-cors, *cors, same-origin
 	    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
 	    credentials: 'same-origin', // include, *same-origin, omit
@@ -57,10 +71,27 @@ $(document).ready(function(){
 	    },
 	    redirect: 'follow', // manual, *follow, error
 	    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-	    // body: JSON.stringify(data) // body data type must match "Content-Type" header
+	    //body: payload // body data type must match "Content-Type" header
 	  });
 	  return response.json(); // parses JSON response into native JavaScript objects
 	}
+	
+	async function callNoGetUrl(url = '', method, payload = {}) {
+		  // Default options are marked with *
+		  const response = await fetch(url, {
+		    method: method, // *GET, POST, PUT, DELETE, etc.
+		    mode: 'cors', // no-cors, *cors, same-origin
+		    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+		    credentials: 'same-origin', // include, *same-origin, omit
+		    headers: {
+		      'Content-Type': 'application/json'
+		    },
+		    redirect: 'follow', // manual, *follow, error
+		    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+		    body:  JSON.stringify(payload) // body data type must match "Content-Type" header
+		  });
+		  return response.json(); // parses JSON response into native JavaScript objects
+		}
 	
 	// RG-04 : Callback quand l'url retourne la réponse
 	function OnApiGetAllArticle(data){
@@ -71,10 +102,8 @@ $(document).ready(function(){
 		data.forEach(note => {
 			// Ajouter un <li> avec le titre de l'article dans le url
 			// j'afficher un article dans la liste
-			
-			//$('#ListView').append("<li>" + note.id + " - " + note.details + "</li>");
-			
-			$('#ListView').append('<div class="uk-card-default uk-card-hover"><p style="padding: 1rem">' + note.details + '<p></div>');
+			var btnDelete = '<a href="#" onclick="deleteNote('+note.id +')">Delete</a>';
+			$('#ListView').append('<div class="uk-card-default uk-card-hover"><p style="padding: 1rem">' + note.details + btnDelete + '<p></div>');
 			
 		
 		});
@@ -82,22 +111,47 @@ $(document).ready(function(){
 		// RG-07 : Quand j'ai terminé le chargement des articles
 		loadingFinish();
 	}
-	  
-	  
-	// RG-01 : Quand j'appuye sur le boutton BtnWebservice
-	$( "#BtnWebservice" ).on( "click", () => {
+	 
+	  function deleteNote(id){
+		// RG-03: Appeler l'URL (en GET)
+		callUrl('http://localhost:8080/SuiviRepas/api/rest/note/delete/' + id, "GET", {})
+		  .then((data) => { 
+			// RG-04
 		
+		 }); 
+	  }
+	  
+	 function refreshAllNote(){
 		// RG-02: Afficher le chargement
 		showLoading();
 		
 		// RG-03: Appeler l'URL (en GET)
-		callUrl('http://localhost:8080/SuiviRepas/api/rest/note/all', {})
+		callUrl('http://localhost:8080/SuiviRepas/api/rest/note/all', "GET", {})
 		  .then((data) => { 
 			// RG-04
 			OnApiGetAllArticle(data)
 		 });
+	 }
+	  
+	// Quand j'appuye sur le boutton BtnWebservice
+	$( "#BtnWebservice" ).on( "click", () => {
+		
+		var form = $('#form-note')[0];
+		
+		// FormData object 
+		var formData = new FormData(form);
+		var jsonNote = { details: formData.get("details") };
+
+		
+		// Appeler l'URL (en GET)
+		callNoGetUrl('http://localhost:8080/SuiviRepas/api/rest/note/add', "POST", jsonNote)
+		  .then((data) => { 
+			// 
+			alert(data)
+		 });
 	});
 
+	refreshAllNote();
 }); 
 
 
