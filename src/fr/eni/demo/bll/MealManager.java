@@ -67,11 +67,11 @@ public class MealManager extends ManagerBase {
 	// PARTIE 2 - IGNORER //
 	// =========================================================== //
 	public BLLResponse<Meal> getMeal(int Id) {
-		Meal meal = new Meal("2022-03-01", 10);
+		Meal meal = new Meal("2022-06-01", 10);
 		
 		BLLResponse<Meal> response = new BLLResponse<Meal>(200, "Success", meal);
 		
-		System.out.println("Test");
+		System.out.println("Test 5");
 		
 		return response;
 	}
