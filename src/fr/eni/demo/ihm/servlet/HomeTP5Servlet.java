@@ -87,8 +87,10 @@ public class HomeTP5Servlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		// Récpérer la selection de la couleur
 		String selectedColor = request.getParameter("selectedColor");
+		
+		// Mettre ) jour le cookie)
 		response.addCookie(new Cookie("colorTheme", selectedColor));
 		
 		// Rediriger sur home-tp5-servlet du get
